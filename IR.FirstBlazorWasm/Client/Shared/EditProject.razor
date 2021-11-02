@@ -1,0 +1,37 @@
+﻿@inherits EditModel<Project>
+
+<EditForm Model="Model" OnValidSubmit="SubmitModel">
+    <MatDialog @bind-IsOpen="@IsDialogOpen" CanBeClosed="false">
+        <MatDialogTitle>Edit project</MatDialogTitle>
+        <MatDialogContent>
+            <DataAnnotationsValidator />
+            <p>
+                <MatInputTextComponent Label="Name" @bind-Value="Model.Name" />
+                <ValidationMessage For="@(() => Model.Name)" />
+            </p>
+            <p>
+                <MatDatePicker Label="Start Date" @bind-Value="Model.StartDate" />
+                <ValidationMessage For="@(() => Model.StartDate)" />
+            </p>
+            <p>
+                <MatDatePicker Label="End Date" @bind-Value="Model.EndDate" />
+                <ValidationMessage For="@(() => Model.EndDate)" />
+            </p>
+            <p>
+                <MatInputTextComponent Label="Customer" @bind-Value="Model.Customer" />
+                <ValidationMessage For="@(() => Model.Customer)" />
+            </p>
+
+            <p>
+                <MatNumericUpDownField Label="Max Hours" @bind-Value="Model.MaxHours" />
+                <ValidationMessage For="@(() => Model.MaxHours)" />
+            </p>
+
+            <ValidationSummary></ValidationSummary>
+        </MatDialogContent>
+        <MatDialogActions>
+            <MatButton Raised="true" @onclick="CancelDialog">Cancel</MatButton>
+            <MatButton Raised="true" type="submit">Submit</MatButton>
+        </MatDialogActions>
+    </MatDialog>
+</EditForm>

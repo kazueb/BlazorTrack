@@ -1,0 +1,40 @@
+﻿@page "/teams"
+
+
+<h3>Teams</h3>
+
+<MatTable Items="@AllTeams" class="mat-elevation-z5">
+    <MatTableHeader>
+        <th>Name</th>
+        <th>Members</th>
+        <th>Projects</th>
+        <th>Actions</th>
+
+    </MatTableHeader>
+    <MatTableRow>
+        <td>@context.Name</td>
+        <td>
+            <ul>
+                @foreach (var member in context.Members)
+                {
+                    <li>@member.FirstName @member.LastName</li>
+                }
+            </ul>
+        </td>
+        <td>
+            <ul>
+                @foreach (var project in context.Projects)
+                {
+                    <li>@project.Name</li>
+                }
+            </ul>
+        </td>
+        <td>
+            <MatIconButton @onclick="Edit" Icon="edit"></MatIconButton>
+            <MatIconButton @onclick="() => Delete(context)" Icon="delete"></MatIconButton>
+        </td>
+    </MatTableRow>
+</MatTable>
+
+<MatButton @onclick="@(_ => ShowDialog())" Raised="true">Show Dialog</MatButton>
+<AddTeam IsDialogOpen="@IsInEdit" OnCancel="OnDialogCanceled"></AddTeam>

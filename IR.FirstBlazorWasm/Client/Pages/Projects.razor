@@ -1,0 +1,33 @@
+﻿@page "/projects"
+
+<h3>Projects</h3>
+
+<MatTable Items="@AllProjects" class="mat-elevation-z5">
+    <MatTableHeader>
+        <th>Name</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Customer</th>
+        <th>Max hours</th>
+        <th>Actions</th>
+
+    </MatTableHeader>
+    <MatTableRow>
+        <td>@context.Name</td>
+        <td>@context.StartDate</td>
+        <td>@context.EndDate</td>
+        <td>@context.Customer</td>
+        <td>@context.MaxHours</td>
+        <td>
+            <MatIconButton @onclick="() => ShowEditDialog(context)" Icon="edit"></MatIconButton>
+            <MatIconButton @onclick="() => Delete(context)" Icon="delete"></MatIconButton>
+        </td>
+    </MatTableRow>
+</MatTable>
+
+@* Add Dialog *@
+<MatButton @onclick="@(_ => ShowAddDialog())" Raised="true">Add project</MatButton>
+<AddProject IsDialogOpen="@IsInAdd" OnCancel="OnAddDialogCanceled" OnSubmit="AddModel"></AddProject>
+
+@* Edit Dialog *@
+<EditProject Model="@EditingModel" IsDialogOpen="@IsInEdit" OnCancel="OnEditDialogCanceled" OnSubmit="EditModel"></EditProject>

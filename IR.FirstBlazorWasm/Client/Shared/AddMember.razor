@@ -1,0 +1,32 @@
+﻿@inherits AddModel<Member>
+
+<EditForm Model="Model" OnValidSubmit="SubmitModel">
+    <MatDialog @bind-IsOpen="@IsDialogOpen" CanBeClosed="false">
+        <MatDialogTitle>Add member</MatDialogTitle>
+        <MatDialogContent>
+            <DataAnnotationsValidator />
+            <p>
+                <MatInputTextComponent Label="Email" @bind-Value="Model.Email" />
+                <ValidationMessage For="@(() => Model.Email)" />
+            </p>
+            <p>
+                <MatInputTextComponent Label="First Name" @bind-Value="Model.FirstName" />
+                <ValidationMessage For="@(() => Model.FirstName)" />
+            </p>
+            <p>
+                <MatInputTextComponent Label="Last Name" @bind-Value="Model.LastName" />
+                <ValidationMessage For="@(() => Model.LastName)" />
+            </p>
+            <p>
+                <MatNumericUpDownField Label="Capacity" @bind-Value="Model.Capacity" />
+                <ValidationMessage For="@(() => Model.Capacity)" />
+            </p>
+
+            <ValidationSummary></ValidationSummary>
+        </MatDialogContent>
+        <MatDialogActions>
+            <MatButton Raised="true" @onclick="CancelDialog">Cancel</MatButton>
+            <MatButton Raised="true" type="submit">Submit</MatButton>
+        </MatDialogActions>
+    </MatDialog>
+</EditForm>

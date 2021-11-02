@@ -1,0 +1,11 @@
+﻿@inject NavigationManager _navigationManager;
+
+<MatIconButton @onclick="GoHome" Icon="home"></MatIconButton>
+
+@code {
+
+    private void GoHome()
+    {
+        _navigationManager.NavigateTo("/");
+    }
+}

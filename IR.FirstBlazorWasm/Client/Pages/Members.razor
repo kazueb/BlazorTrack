@@ -1,0 +1,30 @@
+﻿@page "/members"
+
+<h2>Members</h2>
+
+<MatTable Items="@AllMembers" class="mat-elevation-z5">
+    <MatTableHeader>
+        <th>Email</th>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Capacity</th>
+        <th>Actions</th>
+    </MatTableHeader>
+    <MatTableRow>
+        <td>@context.Email</td>
+        <td>@context.FirstName</td>
+        <td>@context.LastName</td>
+        <td>@context.Capacity</td>
+        <td>
+            <MatIconButton @onclick="() => ShowEditDialog(context)" Icon="edit"></MatIconButton>
+            <MatIconButton @onclick="() => Delete(context)" Icon="delete"></MatIconButton>
+        </td>
+    </MatTableRow>
+</MatTable>
+
+@* Add Dialog *@
+<MatButton @onclick="@(_ => ShowAddDialog())" Raised="true">Add member</MatButton>
+<AddMember IsDialogOpen="@IsInAdd" OnCancel="OnAddDialogCanceled" OnSubmit="AddModel"></AddMember>
+
+@* Edit Dialog *@
+<EditMember Model="@EditingModel" IsDialogOpen="@IsInEdit" OnCancel="OnEditDialogCanceled" OnSubmit="EditModel"></EditMember>

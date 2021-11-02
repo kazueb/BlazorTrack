@@ -1,0 +1,42 @@
+﻿<EditForm Model="Team" OnValidSubmit="SubmitTeam">
+    <MatDialog @bind-IsOpen="@IsDialogOpen" CanBeClosed="false">
+        <MatDialogTitle>Edit member</MatDialogTitle>
+        <MatDialogContent>
+            <DataAnnotationsValidator />
+            <p>
+                <MatInputTextComponent Label="Name" @bind-Value="Team.Name" />
+                <ValidationMessage For="@(() => Team.Name)" />
+            </p>
+            <p>
+                <MatSelect Label="Pick team members" @bind-Value="SelectedMember">
+                    <MatOptionString></MatOptionString>
+                    @foreach (var member in GetMembers())
+                    {
+                        <MatOptionString Value="@member.FirstName">@member.FirstName @member.LastName</MatOptionString>
+                    }
+                </MatSelect>
+
+                <ValidationMessage For="@(() => Team.Members)" />
+            </p>
+
+            <p>
+                <MatSelect Label="Pick team projects" @bind-Value="SelectedProject">
+                    <MatOptionString></MatOptionString>
+                    @foreach (var project in GetProjects())
+                    {
+                        <MatOptionString Value="@project.Name">@project.Name</MatOptionString>
+                    }
+                </MatSelect>
+
+                <ValidationMessage For="@(() => Team.Projects)" />
+            </p>
+
+
+            <ValidationSummary></ValidationSummary>
+        </MatDialogContent>
+        <MatDialogActions>
+            <MatButton Raised="true" @onclick="CancelDialog">Cancel</MatButton>
+            <MatButton Raised="true" type="submit">Submit</MatButton>
+        </MatDialogActions>
+    </MatDialog>
+</EditForm>
