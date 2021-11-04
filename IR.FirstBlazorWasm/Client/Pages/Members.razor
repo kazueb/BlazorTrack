@@ -1,5 +1,7 @@
 ﻿@page "/members"
 
+@attribute [Authorize]
+
 <h2>Members</h2>
 
 <MatTable Items="@AllMembers" class="mat-elevation-z5">

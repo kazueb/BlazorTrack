@@ -18,6 +18,12 @@ namespace IR.FirstBlazorWasm.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
+            builder.Services.AddMsalAuthentication(options =>
+            {
+                builder.Configuration.Bind("Azure:Security", options.ProviderOptions.Authentication);
+                options.ProviderOptions.DefaultAccessTokenScopes.Add("https://graph.microsoft.com/User.Read"); // read scope link "https:// /User.Read
+                options.ProviderOptions.LoginMode = "redirect";
+            });
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             builder.ConfigureServices();
