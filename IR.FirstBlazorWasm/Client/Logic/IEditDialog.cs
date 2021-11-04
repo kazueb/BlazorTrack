@@ -11,6 +11,6 @@ namespace IR.FirstBlazorWasm.Client.Logic
         bool IsInEdit { get; set; }
         void ShowEditDialog(TModel context);
         void OnEditDialogCanceled();
-        void EditModel();
+        Task EditModel(TModel context);
     }
 }

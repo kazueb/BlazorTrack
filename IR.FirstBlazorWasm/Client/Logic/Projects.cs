@@ -1,5 +1,7 @@
 ﻿using IR.FirstBlazorWasm.Client.Logic;
 using IR.FirstBlazorWasm.Client.Models;
+using IR.FirstBlazorWasm.Client.Services;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,8 @@ namespace IR.FirstBlazorWasm.Client.Pages
 {
     public partial class Projects : IAddDialog<Project>, IEditDialog<Project>
     {
+        [Inject]
+        public IModelService<Project> ProjectService { get; set; }
         public List<Project> AllProjects { get; set; }
 
         #region AddDialog
@@ -21,8 +25,9 @@ namespace IR.FirstBlazorWasm.Client.Pages
         {
             IsInAdd = false;
         }
-        public void AddModel(Project context)
+        public async Task AddModel(Project context)
         {
+            await ProjectService.SaveModel(context.Name, context);
             IsInAdd = false;
             AllProjects.Add(context);
         }
@@ -40,8 +45,9 @@ namespace IR.FirstBlazorWasm.Client.Pages
         {
             IsInEdit = false;
         }
-        public void EditModel()
+        public async Task EditModel(Project context)
         {
+            await ProjectService.SaveModel(context.Name, context);
             IsInEdit = false;
         }
         #endregion
@@ -55,16 +61,12 @@ namespace IR.FirstBlazorWasm.Client.Pages
         {
             EditingModel = new Project();
             IsInAdd = IsInEdit = false;
-            AllProjects = new List<Project>()
-            {
-                new Project(){ Name = "project1", StartDate = DateTime.Now, EndDate = DateTime.Now, Customer = "customer", MaxHours = 10},
-                new Project(){ Name = "project2", StartDate = DateTime.Now, EndDate = DateTime.Now, Customer = "customer", MaxHours = 10},
-                new Project(){ Name = "project3", StartDate = DateTime.Now, EndDate = DateTime.Now, Customer = "customer", MaxHours = 10},
-                new Project(){ Name = "project4", StartDate = DateTime.Now, EndDate = DateTime.Now, Customer = "customer", MaxHours = 10},
-                new Project(){ Name = "project5", StartDate = DateTime.Now, EndDate = DateTime.Now, Customer = "customer", MaxHours = 10},
-                new Project(){ Name = "project6", StartDate = DateTime.Now, EndDate = DateTime.Now, Customer = "customer", MaxHours = 10},
-                new Project(){ Name = "project7", StartDate = DateTime.Now, EndDate = DateTime.Now, Customer = "customer", MaxHours = 10},
-            };
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            var projects = await ProjectService.GetModels();
+            AllProjects = projects.ToList();
         }
     }
 }

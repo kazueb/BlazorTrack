@@ -1,14 +1,22 @@
 ﻿using IR.FirstBlazorWasm.Client.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using IR.FirstBlazorWasm.Client.Logic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
+using IR.FirstBlazorWasm.Client.Services;
+using System.Linq;
+using Microsoft.AspNetCore.Components;
 
 namespace IR.FirstBlazorWasm.Client.Pages
 {
     public partial class Members : IAddDialog<Member>, IEditDialog<Member>
     {
+        [Inject]
+        public IModelService<Member> MemberService { get; set; }
+
         public List<Member> AllMembers { get; set; }
 
         #region AddDialog
@@ -21,8 +29,9 @@ namespace IR.FirstBlazorWasm.Client.Pages
         {
             IsInAdd = false;
         }
-        public void AddModel(Member context)
+        public async Task AddModel(Member context)
         {
+            await MemberService.SaveModel(context.Email, context);
             IsInAdd = false;
             AllMembers.Add(context);
         }
@@ -40,14 +49,16 @@ namespace IR.FirstBlazorWasm.Client.Pages
         {
             IsInEdit = false;
         }
-        public void EditModel()
+        public async Task EditModel(Member context)
         {
+            await MemberService.SaveModel(context.Email, context);
             IsInEdit = false;
         }
         #endregion
 
-        public void Delete(Member member)
+        public async Task Delete(Member member)
         {
+            await MemberService.DeleteModel(member.Email);
             AllMembers.Remove(member);
         }
 
@@ -55,15 +66,13 @@ namespace IR.FirstBlazorWasm.Client.Pages
         {
             EditingModel = new Member();
             IsInAdd = IsInEdit = false;
-            AllMembers = new List<Member>()
-            {
-                new Member(){ FirstName = "persoon", LastName = "een", Email = "email1"},
-                new Member(){ FirstName = "persoon", LastName = "twee", Email = "email1"},
-                new Member(){ FirstName = "persoon", LastName = "drie", Email = "email1"},
-                new Member(){ FirstName = "persoon", LastName = "vier", Email = "email1"},
-                new Member(){ FirstName = "persoon", LastName = "vijf", Email = "email1"},
-                new Member(){ FirstName = "persoon", LastName = "zes", Email = "email1"},
-            };
+        }
+
+
+        protected override async Task OnInitializedAsync()
+        {
+            var members = await MemberService.GetModels();
+            AllMembers = members.ToList();
         }
     }
 }

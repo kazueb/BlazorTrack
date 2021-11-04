@@ -1,3 +1,6 @@
+using IR.FirstBlazorWasm.Client.Models;
+using IR.FirstBlazorWasm.Client.Services;
+using IR.FirstBlazorWasm.Client.Services.Impl;
 using MatBlazor;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +18,7 @@ namespace IR.FirstBlazorWasm.Client
     {
         public static async Task Main(string[] args)
         {
-            var builder = WebAssemblyHostBuilder.CreateDefault(args);
+            var builder = WebAssemblyHostBuilder.CreateDefault(args);                
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddMsalAuthentication(options =>
@@ -25,6 +28,16 @@ namespace IR.FirstBlazorWasm.Client
                 options.ProviderOptions.LoginMode = "redirect";
             });
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+            builder.Services.AddHttpClient<IModelService<Member>, MemberService>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44395/");
+            });
+
+            builder.Services.AddHttpClient<IModelService<Project>, ProjectService>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44395/");
+            });
 
             builder.ConfigureServices();
 

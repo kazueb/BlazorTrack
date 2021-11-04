@@ -10,6 +10,6 @@ namespace IR.FirstBlazorWasm.Client.Logic
         bool IsInAdd { get; set; }
         void ShowAddDialog();
         void OnAddDialogCanceled();
-        void AddModel(TModel context);
+        Task AddModel(TModel context);
     }
 }
